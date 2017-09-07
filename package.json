@@ -1,21 +1,22 @@
 {
-  "name": "nightmare",
+  "name": "night",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "dependencies": {
+    "immutable": "^3.8.1",
+    "nightmare": "^2.10.0",
+    "trina": "0.0.1"
+  },
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://LukeEllul@bitbucket.org/LukeEllul/nightmare.git"
+    "url": "git+https://LukeEllul@bitbucket.org/LukeEllul/night.git"
   },
   "author": "Luke Ellul <ellul.luke@gmail.com>",
   "license": "ISC",
-  "homepage": "https://bitbucket.org/LukeEllul/nightmare#readme",
-  "dependencies": {
-    "immutable": "^3.8.1",
-    "nightmarejs": "0.0.1",
-    "trina": "0.0.1"
-  }
+  "homepage": "https://bitbucket.org/LukeEllul/night#readme"
 }
