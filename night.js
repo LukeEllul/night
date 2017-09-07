@@ -1,8 +1,9 @@
 const Nightmare = require('nightmare');
 require('trina');
 const { List } = require('immutable');
+const R = require('ramda');
 
-const nightmare = Nightmare({
-    show: true
-});
-
+const NightmareOptions = {
+    show: true,
+    waitTimeout: 30000
+}
