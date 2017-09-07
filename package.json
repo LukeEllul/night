@@ -6,6 +6,7 @@
   "dependencies": {
     "immutable": "^3.8.1",
     "nightmare": "^2.10.0",
+    "ramda": "^0.24.1",
     "trina": "0.0.1"
   },
   "devDependencies": {},
