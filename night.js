@@ -22,24 +22,53 @@ const nightmare = Nightmare(NightmareOptions);
 //     })
 // });
 
-const night = command => (...args) => fn => {
-    const isFunction = typeof fn === 'function';
-    const thisFn = nightmare => {
-        let thisNightmare = nightmare.constructor === Array ?
-            nightmare[0] : nightmare;
-        return new Promise((res, rej) =>
-            thisNightmare[command](...args)
-                .then(
-                v => res([thisNightmare, isFunction ? fn(v, nightmare[1]) : v]),
-                err => rej([thisNightmare, isFunction ? fn(err, nightmare[1]) : err])
-                ))
+// const night = command => (...args) => fn => {
+//     const isFunction = typeof fn === 'function';
+//     const thisFn = nightmare => {
+//         let thisNightmare = nightmare.constructor === Array ?
+//             nightmare[0] : nightmare;
+//         return new Promise((res, rej) =>
+//             thisNightmare[command](...args)
+//                 .then(
+//                 v => res([thisNightmare, isFunction ? fn(v, nightmare[1]) : v]),
+//                 err => rej([thisNightmare, isFunction ? fn(err, nightmare[1]) : err])
+//                 ))
+//     }
+
+//     return isFunction ? thisFn : thisFn(fn);
+// }
+
+const night = (...commands) => {
+    const nextFn = (...args) => fn => {
+        const isFunction = typeof fn === 'function';
+
+        const thisFn = nightmare => {
+            const thisNightmare = nightmare.constructor === Array ?
+                nightmare[0] : nightmare;
+            const resolutionFn = resolution => v => {
+                const result = isFunction ? fn(v,nightmare[1]) : v;
+                const rFn = r => resolution([thisNightmare, r]);
+                return result && result.then ? result.then(rFn, rFn) : resolution([thisNightmare, result]);
+            }
+            return new Promise((res, rej) => 
+                thisNightmare[commands[0]](...args).then(resolutionFn(res),resolutionFn(rej)));
+        }
+
+        return isFunction ? thisFn : thisFn(fn);
     }
 
-    return isFunction ? thisFn : thisFn(fn);
+    return commands.length === 1 ? nextFn : nextFn(...commands.slice(1));
 }
 
 trina(
-    night('goto')('https://www.google.com')(v => 'paws'), AND,
+    night('goto','https://www.google.com')(v => {
+        console.log('waiting for promise');
+        return new Promise(res => setTimeout(() => res('paws'), 7000));
+    }), AND,
+    night('goto', 'https://www.pornhub.com')((v, j) => {
+        console.log(j);
+        return j;
+    }), AND,
     night('wait')(3000)((v, j) => console.log(j)), AND,
     () => console.log('done')
 )(nightmare);
