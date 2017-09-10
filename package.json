@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "get-parameter-names": "^0.3.0",
     "immutable": "^3.8.1",
     "nightmare": "^2.10.0",
     "ramda": "^0.24.1",
